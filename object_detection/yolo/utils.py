@@ -10,7 +10,7 @@ np.random.seed(1000)  # set seed to ensure color is consistent
 COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 # confidence level
 CONFIDENCE_THRESHOLD = 0.5
-NMS_THRESHOLD = 0.4
+NMS_THRESHOLD = 0.5
 
 
 def yolo_box_to_points(box):

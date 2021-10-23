@@ -31,7 +31,9 @@ net = cv2.dnn.readNetFromDarknet(config_path, weights_path)
 # run model
 model = cv2.dnn_DetectionModel(net)
 model.setInputParams(scale=1 / 255, size=(416, 416), swapRB=True)
-class_ids, scores, boxes = model.detect(image, confThreshold=0.6, nmsThreshold=0.4)
+class_ids, scores, boxes = model.detect(
+    image, confThreshold=CONFIDENCE_THRESHOLD, nmsThreshold=NMS_THRESHOLD
+)
 
 # draw bounding box for each object
 for (class_id, score, box) in zip(class_ids, scores, boxes):
@@ -40,7 +42,7 @@ for (class_id, score, box) in zip(class_ids, scores, boxes):
     x1, y1, x2, y2 = yolo_box_to_points(box)
     draw_bounding_box_with_label(image, x1, y1, x2, y2, label, color)
 
-
+# display image
 cv2.imshow("Image", image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
