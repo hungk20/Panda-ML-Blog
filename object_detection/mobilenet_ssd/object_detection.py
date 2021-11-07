@@ -2,7 +2,13 @@ from argparse import ArgumentParser
 
 import cv2
 
-from utils import CLASSES, COLORS, CONFIDENCE, dnn_detection_to_points
+from utils import (
+    CLASSES,
+    COLORS,
+    CONFIDENCE,
+    dnn_detection_to_points,
+    draw_bounding_box_with_label,
+)
 
 # parse the script parameters
 parser = ArgumentParser(description="Recognize a object in an image")
@@ -40,17 +46,10 @@ for i in range(detections.shape[2]):
     if confidence > CONFIDENCE:
         idx = int(detection[1])  # class index
         x1, y1, x2, y2 = dnn_detection_to_points(detection, width, height)
-        class_label = CLASSES[idx] + ":" + str(round(confidence, 2))
-        class_color = COLORS[idx]
-        cv2.rectangle(image, pt1=(x1, y1), pt2=(x2, y2), color=class_color, thickness=2)
-        cv2.putText(
-            image,
-            class_label,
-            org=(x1 + 5, y1 - 5),
-            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=0.5,
-            color=class_color,
-        )
+
+        label = "%s: %.2f" % (CLASSES[idx], confidence)
+        color = COLORS[idx]
+        draw_bounding_box_with_label(image, x1, y1, x2, y2, label=label, color=color)
 
 # show the output frame
 cv2.imshow("Output Image", image)
