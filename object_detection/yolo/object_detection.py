@@ -24,6 +24,7 @@ image = cv2.imread(image_path)
 height, width = image.shape[:2]
 
 # load model
+# (might need to change to absolute path rather than relative path)
 weights_path = "models/yolov4.weights"
 config_path = "models/yolov4.cfg"
 net = cv2.dnn.readNetFromDarknet(config_path, weights_path)
@@ -37,8 +38,8 @@ class_ids, scores, boxes = model.detect(
 
 # draw bounding box for each object
 for (class_id, score, box) in zip(class_ids, scores, boxes):
-    label = "%s: %.2f" % (CLASSES[class_id[0]], score)
-    color = COLORS[class_id[0]]
+    label = "%s: %.2f" % (CLASSES[class_id], score)
+    color = COLORS[class_id]
     x1, y1, x2, y2 = yolo_box_to_points(box)
     draw_bounding_box_with_label(image, x1, y1, x2, y2, label, color)
 
