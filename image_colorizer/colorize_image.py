@@ -5,7 +5,6 @@ import cv2
 
 from utils import l_channel_from_lab_image, rgb_from_l_and_ab
 
-
 # parse the script parameters
 parser = ArgumentParser()
 parser.add_argument("--image", dest="image_path", required=True)
@@ -41,13 +40,11 @@ net.setInput(cv2.dnn.blobFromImage(L))
 ab = net.forward()[0, :, :, :].transpose((1, 2, 0))
 
 # construct colored image from original L channel & predicted ab channel
-predicted_ab = cv2.resize(ab, (width, height))  
-# resize to original image size
+predicted_ab = cv2.resize(ab, (width, height))  # resize to original image size
 original_L = l_channel_from_lab_image(lab)
-
 colorized = rgb_from_l_and_ab(original_L, predicted_ab)
 
-# display result
+# display image
 cv2.imshow("Original", image)
 cv2.imshow("Colorized", colorized)
 cv2.waitKey(0)
